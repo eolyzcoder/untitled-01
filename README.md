@@ -54,7 +54,7 @@ The application will be accessible at `http://localhost:8000` (or the port you s
 This project provides the following functionalities:
 
 - Create a new user profile
-- 
+- Login
 
 Postman Documentation
 
