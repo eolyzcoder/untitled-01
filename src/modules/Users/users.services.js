@@ -5,6 +5,7 @@ import geoip from 'geoip-lite';
 import { Errors } from './users.errors.js';
 import jwt from 'jsonwebtoken';
 import vars  from '../../config/vars.js';
+import { sendOtp, verifyOTP } from '../../helpers/sms.js';
 
 class UserServices {
     constructor() {
@@ -35,7 +36,7 @@ class UserServices {
       }
       return location;
     }
-  
+    
     async createUser(args) {
       const { userName, name, emailAddress, phoneNumber, countryCode, deviceToken } =  args || {};
 
@@ -71,6 +72,35 @@ class UserServices {
         token,
       };
     }
+
+    async login(args) {
+    
+        let { type, phoneNumber, emailAddress } = args;
+        phoneNumber = phoneNumber ? phoneNumber.trim() : null;
+        emailAddress = emailAddress ? emailAddress.trim().toLowerCase() : null;
+        let data = {};
+
+        if (type === 'phone') {
+          data = {
+            to: phoneNumber,
+            channel: 'sms',
+          };
+        } else {
+          data = {
+            to: emailAddress.toLowerCase(),
+            channel: 'email',
+          };
+        }
+        const { to, channel } = data;
+        const param = { to, channel };
+
+        // Sends OTP to the user
+        if (emailAddress !== 'eolyz.coder@gmail.com') {
+          await sendOtp(param);
+        }
+        return true;
+    }
+    
   }
 
   export { UserServices };
