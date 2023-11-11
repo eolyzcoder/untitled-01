@@ -1,4 +1,5 @@
 import { Users } from './users.schema.js'; 
+import { encrypt } from '../../helpers/encryptors.js'; 
 
 class UsersRepository {
   async findUser(args) {
@@ -48,6 +49,26 @@ class UsersRepository {
       throw error;
     }
   }
+
+async  findByPhoneOrEmail(args) {
+  
+  const { emailAddress, phoneNumber } = args;
+  const encryptedEmail = emailAddress ? encrypt(emailAddress) : '';
+  const encryptedPhoneNumber = phoneNumber ? encrypt(phoneNumber) : '';
+
+
+    const user = await Users.findOne({
+        $or: [
+            { emailAddress: encryptedEmail },
+            { phoneNumber: encryptedPhoneNumber },
+            { secondaryEmail: encryptedEmail },
+            { secondaryPhone: encryptedPhoneNumber },
+        ],
+    });
+
+    return user;
+}
+
 }
 
 export { UsersRepository };

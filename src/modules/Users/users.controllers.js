@@ -36,6 +36,15 @@ class UsersController {
         data,
       });
     });
+
+    this.router.post('/verifyOtp', async (req, res) => { 
+      const data = await this.userServices.verifyOtp(req.body);  
+      res.status(200).json({
+        success: true,
+        message: 'Verified',
+        data,
+      });
+    });
   }
 }
 
