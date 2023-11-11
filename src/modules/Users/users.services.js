@@ -101,6 +101,72 @@ class UserServices {
         return true;
     }
     
+    async verifyOtp (args) {
+
+      let { emailAddress, phoneNumber, code, type } = args;
+    
+      emailAddress = emailAddress.trim().toLowerCase();
+      phoneNumber = phoneNumber.trim();
+    
+      let data = {};
+      if (type === 'phone') {
+        data = {
+          ...data,
+          to: phoneNumber,
+        };
+      } else {
+        data = {
+          ...data,
+          to: emailAddress.toLowerCase(),
+        };
+      }
+    
+      const { to } = data;
+      let verificationCheck = await verifyOTP({ to, code });
+    
+      if (verificationCheck.status === 'approved') {
+        const user = await this.userRepository.findByPhoneOrEmail({
+          phoneNumber,
+          emailAddress,
+        });
+    
+        if (user) {
+          if (type === 'email') {
+          if (user.emailAddress === emailAddress) user.emailVerified = true
+        } else {
+          if (user.phoneNumber === phoneNumber) user.phoneNumber = true
+        }
+        await user.save();
+
+        const userData = user ? {
+          emailAddress: user.emailAddress,
+          phoneNumber: user.phoneNumber,
+          name: user.name,
+          username: user.username,
+          profileImage: user.profileImage,
+        } : null;
+
+          return {
+            data: {
+              user: { data: userData, isRegistered: true },
+              token: jwt.sign({ data: user._id }, vars.jwtSecret),
+            },
+          };
+        } else {
+          return {
+            data: {
+              user: { data: null, isRegistered: false },
+              token: '',
+            },
+          };
+        }
+      } else {
+        console.log(verificationCheck);
+        return true;
+      }
+    };
+    
+
   }
 
   export { UserServices };

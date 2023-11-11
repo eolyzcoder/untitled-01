@@ -13,5 +13,8 @@ export const sendOtp = async (params) => {
     return await client.verify.services(serviceId).verifications.create(params);
 };
 
-
+export const verifyOTP = async (params) => {
+    const { to, code } = params;
+    return await client.verify.services(serviceId).verificationChecks.create({to:to , code:code});
+}
 
