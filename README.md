@@ -55,6 +55,7 @@ This project provides the following functionalities:
 
 - Create a new user profile
 - Login
+- Verify OTP
 
 Postman Documentation
 
