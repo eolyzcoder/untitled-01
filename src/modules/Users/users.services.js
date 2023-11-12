@@ -143,7 +143,7 @@ class UserServices {
           phoneNumber: user.phoneNumber,
           name: user.name,
           username: user.username,
-          profileImage: user.profileImage,
+          profileImage: "",
         } : null;
 
           return {
