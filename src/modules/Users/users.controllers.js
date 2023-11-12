@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { UserServices } from './users.services.js'
+import { uploadFile } from '../../middleware/FileHandler.js'
+
 
 class UsersController {
   constructor() {
@@ -45,6 +47,16 @@ class UsersController {
         data,
       });
     });
+
+    this.router.post('/uploadFiles', async (req, res) => { 
+      const uploadedFiles = uploadFile.array('files', 10);
+      res.status(200).json({
+          success: true,
+          message: "File uploaded successfully!",
+          data: uploadedFiles,
+        });
+    });
+    
   }
 }
 
