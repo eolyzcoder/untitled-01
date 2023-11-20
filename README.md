@@ -57,6 +57,7 @@ This project provides the following functionalities:
 - Login
 - Verify OTP
 - Upload Files
+- Get User Details
 
 Postman Documentation
 
