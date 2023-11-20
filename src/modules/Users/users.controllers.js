@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { UserServices } from './users.services.js'
 import { uploadFile } from '../../middleware/FileHandler.js'
+import bodyParser from 'body-parser';
+
+const jsonParser = bodyParser.json();
+
+
 
 
 class UsersController {
@@ -12,7 +17,7 @@ class UsersController {
 
 
   initializeRoutes() {
-    this.router.post('/createUserProfile', async (req, res) => {
+    this.router.post('/createUserProfile', jsonParser, async (req, res) => {
       try {
         const data = await this.userServices.createUser(req.body);  
         res.status(201).json({
@@ -30,7 +35,7 @@ class UsersController {
       }
     });
 
-    this.router.post('/login', async (req, res) => { 
+    this.router.post('/login', jsonParser, async (req, res) => { 
       const data = await this.userServices.login(req.body);  
       res.status(200).json({
         success: true,
@@ -39,7 +44,7 @@ class UsersController {
       });
     });
 
-    this.router.post('/verifyOtp', async (req, res) => { 
+    this.router.post('/verifyOtp', jsonParser, async (req, res) => { 
       const data = await this.userServices.verifyOtp(req.body);  
       res.status(200).json({
         success: true,
@@ -48,13 +53,23 @@ class UsersController {
       });
     });
 
-    this.router.post('/uploadFiles', async (req, res) => { 
+    this.router.post('/uploadFiles', jsonParser, async (req, res) => { 
       const uploadedFiles = uploadFile.array('files', 10);
       res.status(200).json({
           success: true,
           message: "File uploaded successfully!",
           data: uploadedFiles,
         });
+    });
+
+    this.router.get('/', async (req, res) => {
+      const data = await this.userServices.getUser(req.query.id);  
+      res.status(200).json({
+        success: true,
+        message: 'User Retrieved!',
+        data,
+      });
+      
     });
     
   }

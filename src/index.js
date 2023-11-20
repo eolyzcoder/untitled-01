@@ -3,13 +3,12 @@ import express from 'express';
 import http from 'http';
 import UsersController from './modules/Users/users.controllers.js'; 
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
+
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-app.use(bodyParser.json()); 
 
 // MongoDB connection configuration
 const dbURI = process.env.DATABASE_URI;

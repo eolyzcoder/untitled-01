@@ -23,6 +23,7 @@ const Errors = {
       code: 404,
       message: 'User not found',
     },
+    
   };
   
   export { Errors };

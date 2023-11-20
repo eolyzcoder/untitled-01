@@ -1,5 +1,5 @@
 import { Users } from './users.schema.js'; 
-import { encrypt } from '../../helpers/encryptors.js'; 
+import { decrypt, encrypt } from '../../helpers/encryptors.js'; 
 
 class UsersRepository {
   async findUser(args) {
@@ -50,6 +50,7 @@ class UsersRepository {
     }
   }
 
+
 async  findByPhoneOrEmail(args) {
   
   const { emailAddress, phoneNumber } = args;
@@ -68,6 +69,29 @@ async  findByPhoneOrEmail(args) {
 
     return user;
 }
+
+async findById(args) {
+
+  const user = await Users.findById(args);
+  
+  return user;
+}
+
+async userData(args) {
+  if (!args) {
+    return null;
+  }
+
+  const { _id, name } = args;
+  const decryptedName = name ? decrypt(name): '';
+  
+
+  return {
+    id: _id,
+    name: decryptedName,
+  };
+}
+
 
 }
 
