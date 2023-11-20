@@ -139,10 +139,11 @@ class UserServices {
         await user.save();
 
         const userData = user ? {
+          id: user._id,
           emailAddress: user.emailAddress,
           phoneNumber: user.phoneNumber,
           name: user.name,
-          username: user.username,
+          username: user.userName,
           profileImage: "",
         } : null;
 
@@ -165,6 +166,19 @@ class UserServices {
         return true;
       }
     };
+    
+    async getUser(args) {
+    
+        const user = await this.userRepository.findById(args)
+    
+        if (user) {
+
+          const userData = await this.userRepository.userData(user)
+  
+            return userData
+        } else throw new AppError (Errors.NotFound)
+        
+    }
     
 
   }
