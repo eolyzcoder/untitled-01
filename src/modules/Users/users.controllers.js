@@ -71,6 +71,17 @@ class UsersController {
       });
       
     });
+
+    this.router.delete('/', async (req, res) => {
+      const data = await this.userServices.deleteUser(req.query.id);  
+      res.status(200).json({
+        success: true,
+        message: 'User Deleted!',
+        data,
+      });
+      
+    });
+
     
   }
 }

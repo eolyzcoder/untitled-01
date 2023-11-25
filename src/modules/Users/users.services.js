@@ -180,6 +180,17 @@ class UserServices {
         
     }
     
+    async deleteUser(args) {
+      const user = await this.userRepository.findById(args);
+    
+      if (user) {
+        await this.userRepository.deleteUser(user.id);
+    
+        return true;
+      } else {
+        throw new AppError(Errors.NotFound);
+      }
+    }
 
   }
 
