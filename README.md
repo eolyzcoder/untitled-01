@@ -58,6 +58,7 @@ This project provides the following functionalities:
 - Verify OTP
 - Upload Files
 - Get User Details
+- Delete User
 
 Postman Documentation
 
