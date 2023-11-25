@@ -92,6 +92,11 @@ async userData(args) {
   };
 }
 
+async deleteUser(userId) {
+
+  await Users.deleteOne({ _id: userId });
+
+}
 
 }
 
