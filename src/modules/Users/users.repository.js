@@ -28,16 +28,14 @@ class UsersRepository {
   }
 
   async createUser(args) {
-    const { emailAddress, phoneNumber, deviceToken, userName, location, countryCode, profileImage } = args;
+    const { emailAddress, phoneNumber, name, userName, countryCode } = args;
 
     const clone = {
+      name,
       emailAddress,
       phoneNumber,
       userName,
-      location,
-      countryCode,
-      deviceToken,
-      profileImage,
+      countryCode
     };
 
     try {
@@ -77,20 +75,19 @@ async findById(args) {
   return user;
 }
 
-async userData(args) {
-  if (!args) {
+async userData(user) {
+  if (!user) {
     return null;
   }
 
-  const { _id, name } = args;
-  const decryptedName = name ? decrypt(name): '';
-  
+  const { _id, userName } = user;
 
   return {
     id: _id,
-    name: decryptedName,
+    userName: userName,
   };
 }
+
 
 async deleteUser(userId) {
 

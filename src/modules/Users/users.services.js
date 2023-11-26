@@ -38,10 +38,10 @@ class UserServices {
     }
     
     async createUser(args) {
-      const { userName, name, emailAddress, phoneNumber, countryCode, deviceToken } =  args || {};
+      const { userName, name, emailAddress, phoneNumber, countryCode } =  args || {};
 
        // Check if required properties are provided
-      if (!userName || !name || !emailAddress || !phoneNumber || !countryCode || !deviceToken) {
+      if (!userName || !name || !emailAddress || !phoneNumber || !countryCode ) {
         throw new AppError(Errors.noParams);
       }
 
@@ -59,7 +59,6 @@ class UserServices {
         emailAddress,
         phoneNumber,
         location,
-        deviceToken,
         countryCode,
         userName,
         name,
