@@ -59,6 +59,7 @@ This project provides the following functionalities:
 - Upload Files
 - Get User Details
 - Delete User
+- Edit User Details
 
 Postman Documentation
 
