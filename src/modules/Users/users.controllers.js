@@ -53,12 +53,13 @@ class UsersController {
       });
     });
 
-    this.router.post('/uploadFiles', jsonParser, async (req, res) => { 
-      const uploadedFiles = uploadFile.array('files', 10);
+    this.router.post('/uploadFiles', jsonParser, uploadFile.array('files', 10), async (req, res) => { 
+      const uploadFiles = req.files;
+      const data = uploadFiles.map(file => file.key);
       res.status(200).json({
           success: true,
           message: "File uploaded successfully!",
-          data: uploadedFiles,
+          data,
         });
     });
 
@@ -82,6 +83,28 @@ class UsersController {
       
     });
 
+    this.router.put('/',uploadFile.single('newProfileImage', 1),  async (req, res) => {
+        const { userId, newUserName, newEmailAddress, newPhoneNumber, newName} = req.body;
+
+        const uploadedFile = req.file;
+        const newProfileImage = uploadedFile.key;
+
+        const updatedUserData = await this.userServices.updateUserData({
+              userId, 
+              newUserName, 
+              newEmailAddress, 
+              newPhoneNumber, 
+              newName, 
+              profileImage: newProfileImage
+          });
+
+      res.status(200).json({
+        success: true,
+        message: 'Updated!',
+        data: updatedUserData,
+      });
+    });
+    
     
   }
 }

@@ -1,5 +1,7 @@
 import { Users } from './users.schema.js'; 
 import { decrypt, encrypt } from '../../helpers/encryptors.js'; 
+import { AppError } from '../../config/error.handler.js';
+import { Errors } from './users.errors.js';
 
 class UsersRepository {
   async findUser(args) {
@@ -80,11 +82,14 @@ async userData(user) {
     return null;
   }
 
-  const { _id, userName } = user;
+  const { _id, userName, emailAddress, phoneNumber, name, profileImage, } = user;
 
   return {
     id: _id,
     userName: userName,
+    emailAddress: emailAddress,
+    name: name,
+    profileImage: profileImage,
   };
 }
 
@@ -95,6 +100,45 @@ async deleteUser(userId) {
 
 }
 
+async checkForDuplicates(args) {
+
+  let { newUserName, newEmailAddress, newPhoneNumber }  = args
+  if (newUserName) {
+    const existingUserWithUsername = await this.findUser({
+      userName: newUserName,
+      checkDuplicate: true,
+      id: userId,
+    });
+
+    if (existingUserWithUsername) {
+      throw new AppError(Errors.UsernameExists);
+    }
+  }
+
+  if (newEmailAddress) {
+    const existingUserWithEmail = await this.findUser({
+      emailAddress: newEmailAddress,
+      checkDuplicate: true,
+      id: userId,
+    });
+
+    if (existingUserWithEmail) {
+      throw new AppError(Errors.EmailExists);
+    }
+  }
+
+  if (newPhoneNumber) {
+    const existingUserWithPhone = await this.userRepository.findUser({
+      phoneNumber: newPhoneNumber,
+      checkDuplicate: true,
+      id: userId,
+    });
+
+    if (existingUserWithPhone) {
+      throw new AppError(Errors.PhoneNumberExists);
+    }
+  }
+}
 }
 
 export { UsersRepository };
