@@ -191,6 +191,35 @@ class UserServices {
       }
     }
 
+    async updateUserData(args) {
+    
+        let { userId, newUserName, newEmailAddress, newPhoneNumber, newName, profileImage } = args;
+        const user = await this.userRepository.findById(userId);
+    
+        await this.userRepository.checkForDuplicates(newUserName, newEmailAddress, newPhoneNumber);
+    
+        if (user) {
+          user.userName = newUserName || user.userName;
+          user.emailAddress = newEmailAddress || user.emailAddress;
+          user.phoneNumber = newPhoneNumber || user.phoneNumber;
+          user.name = newName || user.name;
+    
+          if (profileImage) {
+            user.profileImage = profileImage;
+          }
+    
+          const updatedUser = await user.save();
+          const updatedUserData = await this.userRepository.userData(updatedUser);
+    
+          return updatedUserData;
+        } else {
+          throw new AppError(Errors.NotFound);
+        }
+  
+    }
+    
+
+
   }
 
   export { UserServices };

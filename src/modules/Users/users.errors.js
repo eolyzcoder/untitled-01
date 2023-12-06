@@ -15,10 +15,6 @@ const Errors = {
       code: 400,
       message: 'Phone number already exists',
     },
-    URLSearchParamsUsernameExist: {
-      code: 400,
-      message: 'Username already taken',
-    },
     NotFound: {
       code: 404,
       message: 'User not found',
