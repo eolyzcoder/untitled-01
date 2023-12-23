@@ -138,6 +138,7 @@ async checkForDuplicates(args) {
       throw new AppError(Errors.PhoneNumberExists);
     }
   }
+  
 }
 }
 

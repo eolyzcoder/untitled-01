@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
 import UsersController from './modules/Users/users.controllers.js'; 
+import ProductsController from './modules/Products/products.controllers.js'; 
 import mongoose from 'mongoose';
 
 
@@ -42,7 +43,9 @@ app.get('/', (req, res) => {
 });
 
 const userController = new UsersController();
+const productController = new ProductsController();
 app.use('/u', userController.router);
+app.use('/p', productController.router);
 
 const server = http.createServer(app);
 
