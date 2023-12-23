@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     profileImage: { type: String, default: 'public/default_profile.png' },
     deviceToken: { type: String, default: '', },
     location: { type: Object, default: null, },
+    role: { type: String, enum: ['customer', 'employee', 'manager', 'admin'], default: 'customer' },
 }, {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
     toObject: { virtuals: false, getters: true },

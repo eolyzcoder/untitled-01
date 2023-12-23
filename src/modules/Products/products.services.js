@@ -36,6 +36,17 @@ class ProductServices {
       throw new AppError({ code: 500, message: 'Internal Server Error' });
     }
   }
+
+  async updateUserRole(username, newRole) {
+    const user = await User.findOne({ username });
+  
+    if (user) {
+      user.role = newRole;
+      return user.save();
+    }
+  
+    return null;
+  }
 }
 
 export { ProductServices };

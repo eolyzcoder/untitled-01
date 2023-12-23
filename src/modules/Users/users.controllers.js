@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UserServices } from './users.services.js'
 import { uploadFile } from '../../middleware/FileHandler.js'
+import { authorize } from '../../middleware/roleAccess.js'
 import bodyParser from 'body-parser';
 
 const jsonParser = bodyParser.json();
@@ -104,7 +105,15 @@ class UsersController {
         data: updatedUserData,
       });
     });
-    
+
+    this.router.post('/update-role',  authorize(['admin']), async (req, res) => {
+      const data = await this.userServices.updateUserRole(req.body);  
+      res.status(200).json({
+        success: true,
+        message: 'User role updated successfully',
+        data,
+      });
+  })
     
   }
 }

@@ -218,7 +218,18 @@ class UserServices {
   
     }
     
-
+    async  updateUserRole(userName, newRole) {
+      const user = await this.userRepository.findById(userName);
+    
+      if (user) {
+        user.role = newRole;
+        return user.save();
+      }
+    
+      else {
+        throw new AppError(Errors.NotFound);
+      }
+    }
 
   }
 
